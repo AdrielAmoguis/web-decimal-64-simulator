@@ -1,1 +1,56 @@
 /* TODO: Implement Styles */
+body {
+    background-color: #022a50;
+    font-family: 'Yaldevi', sans-serif;
+    color: white;
+}
+
+#main-title {
+    text-align: center;
+}
+
+#input,
+#output {
+    text-align: center;
+}
+
+.output-parent {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.output-child {
+    padding: 1%;
+}
+
+.compute-button {
+    border-radius: 20px;
+    color: #ffffff;
+    font-family: 'Yaldevi', sans-serif;
+    padding: 10px;
+    width: 10em;
+    height: 3em;
+    border: solid #006ce5 0;
+    background-color: #006ce5;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    padding-right: 1em;
+}
+
+.compute-button:hover {
+    background: #1e62d0;
+    border: solid #2665c1 0;
+    border-radius: 20px;
+    text-decoration: none;
+}
+
+#buttons {
+    padding-right: 5em;
+}
+
+footer {
+    text-align: center;
+}

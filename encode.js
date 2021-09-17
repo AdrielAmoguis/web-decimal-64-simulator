@@ -8,12 +8,12 @@
  * @returns An object containing the steps taken and the final answer.
  */
 function encodeDecimal64(decimalInput) {
-  const steps = [];
-  let finalAnswer = "";
+    const steps = [];
+    let finalAnswer = '';
 
-  // TODO: Implement this.
+    // TODO: Implement this.
 
-  // Returns the string array of steps taken that will be displayed to the user. This is expected to be a list of strings.
-  // Returns also the final answer -- this is expected to be of type String that contains the binary string.
-  return { steps, finalAnswer };
+    // Returns the string array of steps taken that will be displayed to the user. This is expected to be a list of strings.
+    // Returns also the final answer -- this is expected to be of type String that contains the binary string.
+    return { steps, finalAnswer };
 }
