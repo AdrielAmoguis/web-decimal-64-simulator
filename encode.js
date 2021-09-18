@@ -253,7 +253,6 @@ function getDPBCD15(x) {
     bcd = toDPBCD3(sub);
     ans += bcd;
   }
-  //console.log(ans);
   return ans;
 }
 
@@ -264,5 +263,14 @@ function getDPBCD15(x) {
  * @return answer in hexadecimal
  */
 function inHex(bin) {
-  return parseInt(bin, 2).toString(16).toUpperCase();
+  // Remove the x
+  const firstX = bin.indexOf("x");
+  let cleanedBin = "";
+  if (firstX !== -1) {
+    cleanedBin = bin.substring(0, firstX);
+  } else {
+    cleanedBin = bin;
+  }
+  toInt = BigInt("0b" + cleanedBin);
+  return toInt.toString(16).toUpperCase();
 }
