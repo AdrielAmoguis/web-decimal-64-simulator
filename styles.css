@@ -40,6 +40,10 @@ body {
     padding-right: 1em;
 }
 
+.output-button {
+    width: 15em;
+}
+
 .compute-button:hover {
     background: #1e62d0;
     border: solid #2665c1 0;
