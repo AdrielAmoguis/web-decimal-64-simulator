@@ -44,7 +44,7 @@ function normalize(decimalInput, exponent) {
   }
 
   // Get the number of digits from decimal input
-  const decimalString = decimalInput.toString();
+  let decimalString = decimalInput.toString();
   if (decimalString.startsWith("-")) decimalString = decimalString.substring(1);
   if (decimalInput.toString().length > 16) {
     normalized = decimalString.padStart(16, "0");
