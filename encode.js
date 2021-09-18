@@ -16,7 +16,23 @@ function encodeDecimal64(decimalInput, exponent) {
   const exponentBin = toBinPad(ePrime, 10);
   const combinationField = getCF(normalized.charAt(0), exponentBin);
   const exponentContinuation = String(exponentBin).substring(2, 11);
-  const coefficientContinuation = getDPBCD15(normalized.substring(1, 14));
+  const coefficientContinuation = getDPBCD15(
+    normalized.substring(1, normalized.length)
+  );
+
+  // Check for special cases
+  // Case 1: NAN
+  if (typeof decimalInput !== "number" || typeof exponent !== "number") {
+    // Return NaN
+    let coef = "";
+    for (var i = 0; i < 50; i++) coef += "x";
+    return `x11111xxxxxxxx${coef}`;
+  } else if (exponent > 384 || exponent < -383) {
+    // INF
+    let coef = "";
+    for (var i = 0; i < 50; i++) coef += "x";
+    return `${signBit}11110xxxxxxxx${coef}`;
+  }
 
   // Returns the string array of steps taken that will be displayed to the user. This is expected to be a list of strings.
   // Returns also the final answer -- this is expected to be of type String that contains the binary string.
@@ -46,7 +62,7 @@ function normalize(decimalInput, exponent) {
   // Get the number of digits from decimal input
   let decimalString = decimalInput.toString();
   if (decimalString.startsWith("-")) decimalString = decimalString.substring(1);
-  if (decimalInput.toString().length > 16) {
+  if (decimalInput.toString().length < 16) {
     normalized = decimalString.padStart(16, "0");
   } else {
     normalized = decimalString;
@@ -108,11 +124,12 @@ function toBinPad(digit, padLen) {
  * @param  UNFINISHED
  */
 function getCF(coefficientMSD, exponentBin) {
-  // Decide which implementation (0-7, 8-9)
+  // Decide which implementation (0-7, 8-9) OR Special case
   const coeffMSD = Number(coefficientMSD);
   const coeffMSDBin = toBinPad(coeffMSD, 4);
   let exponentBits = "";
   let coefficientBits = "";
+
   if (coeffMSD < 8 && coeffMSD >= 0) {
     // Implement: a b c d e
     exponentBits = exponentBin.substring(0, 2);
