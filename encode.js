@@ -129,3 +129,77 @@ function getCF(coefficientMSD, exponentBin) {
 
   return combination;
 }
+
+/** 
+ * This function converts a decimal number to its densely packed BCD representation
+ * @param {*} number. assumed to be a 3-digit INT
+ * @return densely packed BCD representation of the 3-digit INT. This will be in STRING format
+ */
+function toDPBCD3(x) {
+  n = Array.from(String(x), Number);
+  digit = Array(3).fill(0);
+  digit.splice((3 - n.length), n.length, ...n);
+  
+  //get bin of each digit
+  orig = [];
+  for (const val of digit) {
+    d = Array.from(toBinPad(val,4), Number);
+    orig = orig.concat(d);
+  }
+
+  ans = Array(10).fill(0);
+  if (digit[0] < 8) { //0 _ _
+      ans.splice(0, 3, ...orig.slice(1,4));
+      if (digit[1] < 8) { //0 0 _
+          ans.splice(3, 3, ...orig.slice(5,8));
+          if (digit[2] < 8) //0 0 0
+              ans.splice(7, 3, ...orig.slice(9,12));
+          else //0 0 1
+              ans.splice(6, 4, 1, 0, 0, orig[11]);
+      }
+      else {  //0 1 _
+          if (digit[2] < 8) // 0 1 0
+              ans.splice(3, 7, orig[9], orig[10], orig[7], 1, 0, 1, orig[11]);
+          else // 0 1 1
+              ans.splice(3, 7, 1, 0, orig[7], 1, 1, 1, orig[11]);
+      }
+  }
+  else if (digit[1] < 8 && digit[2] < 8) //1 0 0
+      ans.splice(0, 10, orig[9], orig[10], orig[3], orig[5], orig[6], orig[7], 1, 1, 0, orig[11]);
+  else if (digit[1] < 8 && digit[2] > 7) //1 0 1
+      ans.splice(0, 10, orig[5], orig[6] , orig[3], 0, 1, orig[7], 1, 1, 1, orig[11]);
+  else if (digit[1] > 7 && digit[2] < 8) //1 1 0
+      ans.splice(0, 10, orig[9], orig[10], orig[3], 0, 0, orig[7], 1, 1, 1, orig[11]);
+  else // 1 1 1
+      ans.splice(0, 10, 0, 0, orig[3], 1, 1, orig[7], 1, 1, 1, orig[11]);
+  
+  return ans.join("");
+}
+
+/** 
+ * This function converts a decimal number to its densely packed BCD representation
+ * @param {*} number. assumed to be a 15-digit INT
+ * @return densely packed BCD representation of the 15-digit INT. This will be in STRING format
+ */
+function getDPBCD15(x) {
+  s = x.toString();
+  var ans = "";
+  for (i = 0; i < 15; i += 3) {
+      sub = s.substring(i, i + 3);
+      bcd = toDPBCD3(sub)
+      ans += bcd;
+  }
+  console.log(ans);
+  return ans;
+}
+
+/** 
+ * This function converts the binary answer to its hexadecimal representation
+ * @param {*} decimalInput The given number in decimal format that will be converted to decimal 64 binary string.
+ * @param {*} exponent This is for the exponent
+ * @return answer in hexadecimal
+ */
+function inHex(decimalInput, exponent) {
+  bin = encodeDecimal64(decimalInput, exponent)
+  return parseInt(bin, 2).toString(16).toUpperCase()
+} 
