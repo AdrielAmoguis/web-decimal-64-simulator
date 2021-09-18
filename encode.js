@@ -16,10 +16,11 @@ function encodeDecimal64(decimalInput, exponent) {
   const exponentBin = toBinPad(ePrime, 10);
   const combinationField = getCF(normalized.charAt(0), exponentBin);
   const exponentContinuation = String(exponentBin).substring(2, 11);
+  const coefficientContinuation = getDPBCD15(normalized.substring(1,14));
 
   // Returns the string array of steps taken that will be displayed to the user. This is expected to be a list of strings.
   // Returns also the final answer -- this is expected to be of type String that contains the binary string.
-  return `${signBit}${combinationField}${exponentContinuation}`;
+  return `${signBit}${combinationField}${exponentContinuation}${coefficientContinuation}`;
 }
 
 /**
