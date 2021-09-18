@@ -1,78 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="styles.css" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Yaldevi:wght@700&display=swap" rel="stylesheet" />
-        <title>IEEE-754 Decimal-64 Simulator</title>
-    </head>
-    <body>
-        <!-- TODO: Implement Page Design -->
-        <script src="./viewController.js"></script>
-        <script src="./decode.js"></script>
-        <script src="./encode.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Yaldevi:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <title>IEEE-754 Decimal-64 Simulator</title>
+  </head>
+  <body>
+    <!-- MAIN PAGE DESIGN -->
+    <div id="main-title">
+      <h1>IEEE-754 Decimal-64 Simulator</h1>
+    </div>
 
-        <!-- MAIN PAGE DESIGN -->
-        <div id="main-title">
-            <h1>IEEE-754 Decimal-64 Simulator</h1>
+    <p style="text-align: center">
+      Input a floating point number (in scientific notation)
+    </p>
+
+    <!-- INPUT -->
+    <form id="input" onsubmit="compute(event)">
+      <input type="number" name="significand" id="inputSignificand" />
+      x 10 E
+      <input type="number" name="exponent" id="inputExponent" />
+      <br />
+      <br />
+      <!-- SUBMIT TO BACK-END -->
+      <input class="compute-button" type="submit" value="Compute" />
+      <!-- RESET VALUES AND CLEAR OUTPUT -->
+      <input
+        class="compute-button"
+        type="reset"
+        value="Reset"
+        onclick="clearInputFields()"
+      />
+    </form>
+
+    <!-- OUTPUT -->
+    <form id="output">
+      <div class="output-parent">
+        <div class="output-child">
+          <p>Sign Bit</p>
+          <input
+            type="text"
+            name="sign-bit"
+            size="1"
+            readonly
+            id="outputSignBit"
+          />
         </div>
 
-        <p style="text-align: center">Input a floating point number (in scientific notation)</p>
+        <div class="output-child">
+          <p>Combination Field</p>
+          <input
+            type="text"
+            name="comb-field"
+            size="5"
+            readonly
+            id="outputCombination"
+          />
+        </div>
 
-        <!-- INPUT -->
-        <form id="input">
-            <input type="number" name="significand" />
-            x 10 E
-            <input type="number" name="exponent" />
-            <br />
-            <br />
-            <!-- SUBMIT TO BACK-END -->
-            <input class="compute-button" type="submit" value="Compute" onclick="placeFunctionHere();" />
-            <!-- RESET VALUES AND CLEAR OUTPUT -->
-            <input class="compute-button" type="reset" value="Reset" onclick="placeFunctionHere();" />
-        </form>
+        <div class="output-child">
+          <p>Exponent Continuation Field</p>
+          <input
+            type="text"
+            name="exp-cont"
+            size="8"
+            readonly
+            id="outputExponentCont"
+          />
+        </div>
+        <div class="output-child">
+          <p>Coefficient Continuation Field</p>
+          <input
+            type="text"
+            name="coeff-cont"
+            size="51"
+            readonly
+            id="outputCoefContinuation"
+          />
+        </div>
+      </div>
+      <input
+        class="compute-button output-button"
+        type="submit"
+        value="Copy Binary Output"
+        onclick="copyBinary(event);"
+      />
 
-        <!-- OUTPUT -->
-        <form id="output">
-            <div class="output-parent">
-                <div class="output-child">
-                    <p>Sign Bit</p>
-                    <input type="text" name="sign-bit" size="1" readonly />
-                </div>
+      <div class="output-parent">
+        <div class="output-child">
+          <p>Hexadecimal Output</p>
+          <input
+            type="text"
+            name="hex-output"
+            size="18"
+            readonly
+            id="outputHex"
+          />
+        </div>
+      </div>
+      <input
+        class="compute-button output-button"
+        type="submit"
+        value="Copy Hex Output"
+        onclick="copyHex(event);"
+      />
+    </form>
+    <hr />
 
-                <div class="output-child">
-                    <p>Combination Field</p>
-                    <input type="text" name="comb-field" size="5" readonly />
-                </div>
+    <footer>
+      <p>A project by Group 10 as a requirement for CSARCH2</p>
+      <p>Amoguis — Bartolome — Mendoza — Querol</p>
+    </footer>
 
-                <div class="output-child">
-                    <p>Exponent Continuation Field</p>
-                    <input type="text" name="exp-cont" size="8" readonly />
-                </div>
-                <div class="output-child">
-                    <p>Coefficient Continuation Field</p>
-                    <input type="text" name="coeff-cont" size="50" readonly />
-                </div>
-            </div>
-            <input class="compute-button output-button" type="submit" value="Copy Binary Output" onclick="placeFunctionHere();" />
-
-            <div class="output-parent">
-                <div class="output-child">
-                    <p>Hexadecimal Output</p>
-                    <input type="text" name="hex-output" size="16" readonly />
-                </div>
-            </div>
-            <input class="compute-button output-button" type="submit" value="Copy Hex Output" onclick="placeFunctionHere();" />
-        </form>
-        <hr />
-
-        <footer>
-            <p>A project by Group 10 as a requirement for CSARCH2</p>
-            <p>Amoguis — Bartolome — Mendoza — Querol</p>
-        </footer>
-    </body>
+    <script src="./viewController.js"></script>
+    <script src="./encode.js"></script>
+  </body>
 </html>
