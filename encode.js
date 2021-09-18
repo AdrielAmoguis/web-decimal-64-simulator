@@ -10,8 +10,31 @@
  */
 function encodeDecimal64(decimalInput, exponent) {
   // TODO: Implement this.
-  const signBit = getSign(decimalInput);
-  const { normalized, normalizedExponent } = normalize(decimalInput, exponent);
+
+  const signBit = getSign(Number(decimalInput));
+
+  // Check for special cases
+  if (
+    isNaN(decimalInput) ||
+    isNaN(exponent) ||
+    decimalInput.length === 0 ||
+    exponent.length === 0
+  ) {
+    // Return NaN
+    let coef = "";
+    for (var i = 0; i < 50; i++) coef += "x";
+    return `x11111xxxxxxxx${coef}`;
+  } else if (Number(exponent) > 384 || Number(exponent) < -383) {
+    // INF
+    let coef = "";
+    for (var i = 0; i < 50; i++) coef += "x";
+    return `${signBit}11110xxxxxxxx${coef}`;
+  }
+
+  const { normalized, normalizedExponent } = normalize(
+    Number(decimalInput),
+    Number(exponent)
+  );
   const ePrime = getEPrime(normalizedExponent);
   const exponentBin = toBinPad(ePrime, 10);
   const combinationField = getCF(normalized.charAt(0), exponentBin);
@@ -19,20 +42,6 @@ function encodeDecimal64(decimalInput, exponent) {
   const coefficientContinuation = getDPBCD15(
     normalized.substring(1, normalized.length)
   );
-
-  // Check for special cases
-  // Case 1: NAN
-  if (typeof decimalInput !== "number" || typeof exponent !== "number") {
-    // Return NaN
-    let coef = "";
-    for (var i = 0; i < 50; i++) coef += "x";
-    return `x11111xxxxxxxx${coef}`;
-  } else if (exponent > 384 || exponent < -383) {
-    // INF
-    let coef = "";
-    for (var i = 0; i < 50; i++) coef += "x";
-    return `${signBit}11110xxxxxxxx${coef}`;
-  }
 
   // Returns the string array of steps taken that will be displayed to the user. This is expected to be a list of strings.
   // Returns also the final answer -- this is expected to be of type String that contains the binary string.
@@ -271,6 +280,11 @@ function inHex(bin) {
   } else {
     cleanedBin = bin;
   }
+
+  if (cleanedBin.length === 0) {
+    return "xxxx";
+  }
+
   toInt = BigInt("0b" + cleanedBin);
   return toInt.toString(16).toUpperCase();
 }

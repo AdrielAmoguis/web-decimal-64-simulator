@@ -25,10 +25,8 @@ function clearInputFields(e) {
 function compute(e) {
   e.preventDefault();
 
-  const inputDecimal = Number(
-    document.getElementById("inputSignificand").value
-  );
-  const inputExponent = Number(document.getElementById("inputExponent").value);
+  const inputDecimal = document.getElementById("inputSignificand").value;
+  const inputExponent = document.getElementById("inputExponent").value;
 
   // Calculate
   const answerBinaryString = encodeDecimal64(inputDecimal, inputExponent);
