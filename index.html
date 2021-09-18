@@ -25,9 +25,14 @@
 
     <!-- INPUT -->
     <form id="input" onsubmit="compute(event)">
-      <input type="number" name="significand" id="inputSignificand" />
+      <input
+        type="number"
+        name="significand"
+        id="inputSignificand"
+        step="any"
+      />
       x 10 E
-      <input type="number" name="exponent" id="inputExponent" />
+      <input type="number" name="exponent" id="inputExponent" step="any" />
       <br />
       <br />
       <!-- SUBMIT TO BACK-END -->
